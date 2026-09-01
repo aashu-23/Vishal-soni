@@ -1,0 +1,372 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================================
+   VISHAL SONI — design tokens
+   Palette is deliberately three-note: cold black, warm bone, one signal blue.
+   The blue is the only saturated colour on the entire site.
+   ========================================================================= */
+@layer base {
+  /* Live values — rewritten by src/lib/fields.js as sections scroll past.
+     Defaults here are the `chalk` room so first paint is correct before JS. */
+  :root {
+    --bg-rgb: 233 234 228;
+    --on-rgb: 20 20 26;
+    --on2-rgb: 90 91 95;
+    --on3-rgb: 103 104 103;
+    --rule-rgb: 20 20 26;
+    --accent-rgb: 61 47 224;
+    --shade-rgb: 18 18 23;
+    /* Fixed, not rewritten by fields.js — for content that sits on --shade
+       (the lightbox backdrop), which stays dark regardless of which themed
+       section is scrolled behind it. */
+    --paper-rgb: 233 234 228;
+
+    --field: rgb(var(--bg-rgb));
+    --on: rgb(var(--on-rgb));
+    --on2: rgb(var(--on2-rgb));
+    --on3: rgb(var(--on3-rgb));
+    --accent: rgb(var(--accent-rgb));
+    --rule: rgb(var(--rule-rgb) / 0.2);
+    --rule-soft: rgb(var(--rule-rgb) / 0.1);
+    --well: rgb(var(--on-rgb) / 0.06);
+
+    --gutter: 20px;
+    --col-gap: 14px;
+    --maxw: 1680px;
+    --nav-h: 60px;
+
+    --e-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --e-inout: cubic-bezier(0.83, 0, 0.17, 1);
+  }
+  @media (min-width: 768px) {
+    :root { --gutter: 32px; --col-gap: 20px; --nav-h: 72px; }
+  }
+  @media (min-width: 1280px) {
+    :root { --gutter: 48px; --col-gap: 24px; }
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--field);
+    color: var(--on);
+    font-family: Switzer, ui-sans-serif, system-ui, "Helvetica Neue", sans-serif;
+    font-weight: 400;
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--accent); color: var(--field); }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+  /* Never trap keyboard users behind the custom cursor */
+  body.cursor-hidden,
+  body.cursor-hidden a,
+  body.cursor-hidden button { cursor: none; }
+
+  img, video { display: block; max-width: 100%; }
+  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; }
+  a { color: inherit; text-decoration: none; }
+}
+
+/* ---------------- Lenis ---------------- */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* =========================================================================
+   TYPE SCALE
+   Two families only. Zodiak (sharp-terminal serif) carries names and
+   statements; Switzer carries everything a reader has to actually read.
+   Metadata uses tabular figures rather than a monospace face.
+   ========================================================================= */
+@layer components {
+  .t-meta {
+    font-size: 10.5px;
+    line-height: 1.25;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--on3);
+  }
+  @media (min-width: 768px) { .t-meta { font-size: 11px; } }
+
+  .t-label {
+    font-size: 12.5px;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+    font-weight: 500;
+    color: var(--on2);
+  }
+
+  .t-body {
+    font-size: clamp(15px, 1.02vw, 16.5px);
+    line-height: 1.66;
+    font-weight: 400;
+    color: var(--on2);
+    max-width: 62ch;
+  }
+
+  .t-lead {
+    font-size: clamp(18px, 1.6vw, 24px);
+    line-height: 1.5;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    color: var(--on);
+    max-width: 34ch;
+  }
+
+  .t-name {
+    font-family: Zodiak, "Iowan Old Style", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(38px, 5.4vw, 84px);
+    line-height: 0.94;
+    letter-spacing: -0.022em;
+  }
+
+  .t-title {
+    font-family: Zodiak, "Iowan Old Style", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(28px, 3.3vw, 52px);
+    line-height: 1.02;
+    letter-spacing: -0.018em;
+  }
+
+  .t-statement {
+    font-family: Zodiak, "Iowan Old Style", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(40px, 6.4vw, 96px);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+  }
+
+  .t-index {
+    font-size: clamp(11px, 0.85vw, 13px);
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    color: var(--on3);
+  }
+
+  /* ---------------- layout ---------------- */
+  .shell {
+    width: 100%;
+    max-width: var(--maxw);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .grid12 {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--col-gap);
+  }
+  .rule-top { border-top: 1px solid var(--rule); }
+  .rule-bot { border-bottom: 1px solid var(--rule); }
+}
+
+/* =========================================================================
+   MEDIA SYSTEM
+   Aspect ratio is design information, not a problem to crop away.
+   ========================================================================= */
+.media {
+  position: relative;
+  overflow: hidden;
+  background: var(--well);
+  width: 100%;
+}
+.media > video,
+.media > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+.media-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 700ms var(--e-out);
+}
+.media-poster[data-ready='true'] { opacity: 0; }
+
+/* thin loading line — the only "spinner" on the site */
+.media-load {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: var(--rule-soft);
+  overflow: hidden;
+}
+.media-load::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: translateX(-100%);
+  animation: load-sweep 1.5s var(--e-inout) infinite;
+}
+@keyframes load-sweep {
+  0%   { transform: translateX(-100%); }
+  60%  { transform: translateX(0%); }
+  100% { transform: translateX(100%); }
+}
+
+/* clip-path reveal used for every piece of media on the site */
+.reveal-media { clip-path: inset(100% 0 0 0); }
+.reveal-media > * { transform: scale(1.08); }
+
+/* =========================================================================
+   GRAIN — a single fixed tile, blended, no per-frame cost
+   ========================================================================= */
+.grain {
+  position: fixed;
+  inset: -120px;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.038;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-drift 700ms steps(1) infinite;
+}
+@keyframes grain-drift {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-14px, 8px); }
+  50%  { transform: translate(9px, -12px); }
+  75%  { transform: translate(-6px, -5px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* =========================================================================
+   CURSOR
+   ========================================================================= */
+.cur {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 90;
+  pointer-events: none;
+  will-change: transform;
+}
+.cur-dot {
+  width: 5px; height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: var(--on);
+}
+.cur-ring {
+  display: grid;
+  place-items: center;
+  width: 44px; height: 44px;
+  margin: -22px 0 0 -22px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: rgb(var(--bg-rgb) / 0.3);
+  backdrop-filter: blur(2px);
+  transform: scale(0.42);
+  transition: border-color 400ms var(--e-out), background-color 400ms var(--e-out);
+}
+.cur-ring[data-state='play'],
+.cur-ring[data-state='view'],
+.cur-ring[data-state='arrow'] {
+  border-color: transparent;
+  background: var(--accent);
+}
+.cur-text {
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--field);
+  opacity: 0;
+  white-space: nowrap;
+}
+
+/* =========================================================================
+   MARQUEE
+   ========================================================================= */
+.marquee { display: flex; width: max-content; will-change: transform; }
+.marquee-track {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  animation: marquee 42s linear infinite;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-100%); } }
+
+/* horizontal rail fallback on touch */
+.rail-scroll {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.rail-scroll::-webkit-scrollbar { display: none; }
+.rail-scroll > * { scroll-snap-align: center; }
+
+/* underline that draws from the left on hover */
+.ul-draw { position: relative; display: inline-block; }
+.ul-draw::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -3px;
+  height: 1px; width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 560ms var(--e-out);
+}
+.ul-draw:hover::after,
+.ul-draw:focus-visible::after { transform: scaleX(1); }
+
+/* =========================================================================
+   REDUCED MOTION — honoured everywhere, not just decoratively
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain { animation: none; }
+  .reveal-media { clip-path: none !important; }
+  .reveal-media > * { transform: none !important; }
+  .media-load { display: none; }
+}
+
+/* =========================================================================
+   VIDEO GRID
+   flex-wrap + justify-center is deliberate: it's what lets a partial last row
+   centre itself (Motion Graphics lands as 4 + 3) without special-casing.
+   ========================================================================= */
+.vgrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--col-gap);
+}
+.vgrid > * {
+  flex: 0 0 calc((100% - (var(--cols) - 1) * var(--col-gap)) / var(--cols));
+  min-width: 0;
+}
+.vgrid[data-cols='4'] { --cols: 2; }
+.vgrid[data-cols='2'] { --cols: 1; }
+@media (min-width: 640px)  { .vgrid[data-cols='4'] { --cols: 3; } }
+@media (min-width: 768px)  { .vgrid[data-cols='2'] { --cols: 2; } }
+@media (min-width: 1024px) { .vgrid[data-cols='4'] { --cols: 4; } }
