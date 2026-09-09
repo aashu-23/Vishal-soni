@@ -16,7 +16,7 @@ export const site = {
   yearsRange: '2025—2026',
 
   // Verbatim from his Behance bio.
-  bio: 'Multidisciplinary creative professional with 8+ years across branding, advertising and digital design, with experience leading creative teams and working with brands including Maruti Suzuki, Hero MotoCorp, ITC, Keyy, Ciferon and Genpact.',
+  bio: 'Creative design lead with 8+ years across branding, advertising and digital design, including 4+ years agency-side running creative teams and client delivery. Works end to end from brand identity through motion and 3D, with recent work concentrated in fintech, SaaS and enterprise tech.',
 
   email: 'sonivishal76@gmail.com',
 
