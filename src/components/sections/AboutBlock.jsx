@@ -13,7 +13,7 @@ export default function AboutBlock({ compact = false }) {
         <div className="col-span-12 md:col-span-5">
           <RevealLines as="h3" lines={['Vishal', 'Soni']} className="t-title" />
           <ul className="mt-6">
-            {['Graphic Designer', 'Motion Designer', '3D Artist'].map((r) => (
+            {['Creative Design Lead - Design, Motion & 3D'].map((r) => (
               <li key={r} className="t-label">
                 {r}
               </li>

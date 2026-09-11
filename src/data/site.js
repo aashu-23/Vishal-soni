@@ -8,9 +8,9 @@
 export const site = {
   name: 'Vishal Soni',
   role: 'Graphic, Motion Graphics & 3D Artist',
-  roleLines: ['Motion Graphics', 'Video Editing', '3D'],
+  roleLines: ['Creative Design Lead - Design, Motion & 3D'],
   location: 'Nagpur, India',
-  studio: 'Pixellus Design Solutions',
+  studio: 'Hiveway Media',
   availability: 'Available for freelance & full-time',
   experience: '8+ years',
   yearsRange: '2025—2026',
